@@ -53,7 +53,8 @@ user.save((err, doc) => {
 
 // index controller
 const index = (req, res)=> {
-  res.send(' i just gave you a good reply..')
+  res.send(`<h1 style=" font-weigth:bold; color: red "
+  > Welcome to channel1000 server</h1>`)
 }
 
 

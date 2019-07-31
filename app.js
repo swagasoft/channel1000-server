@@ -16,6 +16,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(passport.initialize());
+app.use('/', routeController);
 app.use('/api', routeController);
 
 
