@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
 const jwt = require('jsonwebtoken');
+var uniqueValidator = require('mongoose-unique-validator');
+
 
 
 // isInvestor: {
@@ -20,14 +22,14 @@ var userSchema = mongoose.Schema({
    
     email: {
         type: String,
-        required:'email can\t be empty',
-        unique: true
+        required: true,
+        unique: true,
 
     },
-    number: {
-        type: Number,
-        required:'number can\t be empty',
-
+    username: {
+        type: String,
+        required: true,
+        unique: true,
 
     },
     password: {
@@ -42,6 +44,15 @@ var userSchema = mongoose.Schema({
     } ,
     role: {
         type: String,
+    } ,
+    ref_link: {
+        type: String,
+    } ,
+    ref: {
+        type: String,
+    } ,
+    stage: {
+        type: String,
 
     } ,
     activate: {
@@ -51,6 +62,9 @@ var userSchema = mongoose.Schema({
         type: Date, default: Date.now()
     },
 });
+
+// Apply the uniqueValidator plugin to userSchema.
+userSchema.plugin(uniqueValidator);
 
 // custom validation
 userSchema.path('email').validate((val)=> {
