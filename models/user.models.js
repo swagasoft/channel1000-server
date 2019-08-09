@@ -53,8 +53,10 @@ var userSchema = mongoose.Schema({
     } ,
     stage: {
         type: String,
-
     } ,
+    downline:[{
+        type: String
+    }] ,
     activate: {
         type: Boolean,
     },
