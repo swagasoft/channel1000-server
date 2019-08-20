@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
 const lodash = require('lodash');
 
 const User = mongoose.model('User');
 const nodemailer = require("nodemailer");
 const Base_link = 'http://localhost:4200/#/link/';
+const stage1 = 'newbies';
 
 // output mail
 const output= ` <div style="text-align: center">
@@ -54,10 +53,7 @@ transporter.sendMail(mailOptions, function(error, info){
 var user = new User();
     let ref_username = req.body.ref_username;
     console.log('referal',ref_username);
-
-    // User.findOne().sort({date: 1}).limit(1).then( doc => {
-    //   console.log(doc.downline);
-    // })
+    let checkRole =  req.body.role;
 
 // convert all m to lower case.
 let getEmail = req.body.email;
@@ -67,9 +63,30 @@ let usernameToLower = getUsername.toLowerCase();
   // hash user password
   let hashValue = cryptr.encrypt(req.body.password);
 
-  User.findOne().sort({date: -1}).limit(1).then( result => {
-var new_Cust_id = parseInt(result.cust_id);
-  let intValue = new_Cust_id + 1;
+  // ===================
+  if(checkRole == 'investor'){
+    console.log('user is investor');
+
+    User.findOne(
+      {$and: [
+        {role: 'investor'},
+        {$where: 'this.downline.length < 4'}
+      ]}
+    ).sort({date: 1}).then( result => {
+      result.downline.push(usernameToLower);
+      result.save();
+    });
+  }else {
+    
+    console.log('user is a marketer');
+
+  }
+
+  // =========================
+
+ 
+  // let intValue = new_Cust_id + 1;
+  let intValue = 0000;
 
 user.fullname = req.body.fullname;
 user.username = usernameToLower;
@@ -77,9 +94,9 @@ user.email = email_lower;
 user.ref_link = Base_link+req.body.username;
 user.cust_id = intValue;
 user.role =  req.body.role;
-user.stage = 'newbies';
-user.ref = 'swagasoft';
-user.downline.push('username2');
+user.stage = stage1;
+user.ref = ref_username;
+user.downline.push();
 user.password = hashValue;
 user.activate = false;
 
@@ -87,7 +104,7 @@ user.save((err, doc) => {
     if(!err){
        console.log('user details saved in database');
        res.status(201).send(['Registration succesful']);
-      emailUser(doc.email, doc.username);
+      // emailUser(doc.email, doc.username);
     }else  if(err.errors.email) {
     res.status(442).send(['User already exist!']);
     }else if(err.errors.username){
@@ -99,7 +116,8 @@ user.save((err, doc) => {
     
 });
 
-  });
+
+
 }
 
 
@@ -124,8 +142,8 @@ let decrypePass = cryptr.decrypt(databasePassword);
 
     if(decrypePass === password){
       token = user.generateJwt(user);
-      res.status(200);
-      res.json({"token":token});
+      // send user role to client...
+      res.json({"token":token ,  doc: lodash.pick(user, ['role'])});
 
     }else{
       res.status(401).send([' Wrong password.']);

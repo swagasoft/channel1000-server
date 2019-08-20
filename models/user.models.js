@@ -1,18 +1,9 @@
 const mongoose = require('mongoose');
-const Cryptr = require('cryptr');
-const cryptr = new Cryptr('myTotalySecretKey');
 const jwt = require('jsonwebtoken');
 var uniqueValidator = require('mongoose-unique-validator');
 
 
 
-// isInvestor: {
-//     type: Boolean,
-
-// },
-// isMarketer: {
-//     type: Boolean,
-// },
 var userSchema = mongoose.Schema({
 
     fullname: {
