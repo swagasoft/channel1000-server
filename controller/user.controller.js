@@ -52,7 +52,6 @@ transporter.sendMail(mailOptions, function(error, info){
  const register = (req, res, next) => {
 var user = new User();
     let ref_username = req.body.ref_username;
-    console.log('referal',ref_username);
     let checkRole =  req.body.role;
 
 // convert all m to lower case.
@@ -65,7 +64,7 @@ let usernameToLower = getUsername.toLowerCase();
 
   // ===================
   if(checkRole == 'investor'){
-    console.log('user is investor');
+    console.log('USER IS AN INVESTOR...');
 
     User.findOne(
       {$and: [
@@ -75,11 +74,23 @@ let usernameToLower = getUsername.toLowerCase();
     ).sort({date: 1}).then( result => {
       result.downline.push(usernameToLower);
       result.save();
+      console.log(result);
     });
   }else {
+    console.log('USER IS A MARKETER...');
     
-    console.log('user is a marketer');
+  }
 
+  if(ref_username != null){
+    console.log('inside referal',ref_username);
+    User.findOne({username:ref_username}).then( result => {
+      result.save();
+      result.downline.push(usernameToLower);
+
+    });
+  }else{
+    console.log('REFERRAL IS NOT DEFINE.')
+    console.log(ref_username);
   }
 
   // =========================
@@ -161,7 +172,7 @@ User.findOne({_id: req._id}, (err, doc) => {
     // send dashboard informations
     return res.status(200).json({status: true, 
       user: lodash.pick(doc,
-        ['email', 'username','role', 'ref_link','cust_id','cust_id','activate','stage'])});
+        ['email', 'username','role', 'ref_link','cust_id','cust_id','activate','stage', 'downline'])});
   }
 });
 }
