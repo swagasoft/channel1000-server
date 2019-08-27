@@ -63,7 +63,7 @@ let usernameToLower = getUsername.toLowerCase();
   let hashValue = cryptr.encrypt(req.body.password);
 
   // ===================
-  if(checkRole == 'investor'){
+  if(checkRole == 'INVESTOR'){
     console.log('USER IS AN INVESTOR...');
 
     User.findOne(
@@ -172,7 +172,7 @@ User.findOne({_id: req._id}, (err, doc) => {
     // send dashboard informations
     return res.status(200).json({status: true, 
       user: lodash.pick(doc,
-        ['email', 'username','role', 'ref_link','cust_id','cust_id','activate','stage', 'downline'])});
+        ['email','fullname', 'username','role', 'ref_link','cust_id','cust_id','activate','stage', 'downline'])});
   }
 });
 }

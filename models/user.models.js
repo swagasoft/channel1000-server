@@ -42,8 +42,8 @@ var userSchema = mongoose.Schema({
     ref: {
         type: String,
     } ,
-    stage: {
-        type: String,
+    level: {
+        type: String, enum:['LEVEL-1','LEVEL-2', 'LEVEL-3', 'LEVEL-4','LEVEL-5','LEVEL-6'], default:'LEVEL-1'
     } ,
     downline:[{
         type: String
