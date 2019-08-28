@@ -7,4 +7,4 @@ mongoose.connect(process.env.MONGODB_URI, (err) => {
 
 require('./user.models');
 require('./model_trans');
-require('./payment_model');
+require('./invest_model');

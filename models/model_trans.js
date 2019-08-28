@@ -6,8 +6,14 @@ var paymentSchema = mongoose.Schema({
     amount: {
         type: Number,
     },
+    user_id: {
+        type: String,
+    },
     reference: {
         type: Number,
+    },
+    email: {
+        type: String,
     },
     status: {
         type: String,
@@ -20,6 +26,9 @@ var paymentSchema = mongoose.Schema({
     },
     user: {
         type: String,
+    },
+    date: {
+        type: Date, default: Date.now()
     },
 });
 

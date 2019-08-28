@@ -4,9 +4,13 @@ const cryptr = new Cryptr('myTotalySecretKey');
 const lodash = require('lodash');
 
 const User = mongoose.model('User');
+const Invest = mongoose.model('Payment');
 const nodemailer = require("nodemailer");
 const Base_link = 'http://localhost:4200/#/link/';
 const stage1 = 'newbies';
+
+var dashboardInfo = {};
+var investInfo = {};
 
 // output mail
 const output= ` <div style="text-align: center">
@@ -63,23 +67,7 @@ let usernameToLower = getUsername.toLowerCase();
   let hashValue = cryptr.encrypt(req.body.password);
 
   // ===================
-  if(checkRole == 'INVESTOR'){
-    console.log('USER IS AN INVESTOR...');
-
-    User.findOne(
-      {$and: [
-        {role: 'investor'},
-        {$where: 'this.downline.length < 4'}
-      ]}
-    ).sort({date: 1}).then( result => {
-      result.downline.push(usernameToLower);
-      result.save();
-      console.log(result);
-    });
-  }else {
-    console.log('USER IS A MARKETER...');
-    
-  }
+ 
 
   if(ref_username != null){
     console.log('inside referal',ref_username);
@@ -166,24 +154,25 @@ let decrypePass = cryptr.decrypt(databasePassword);
 
 const userDashboard = (req, res, next) =>{
 User.findOne({_id: req._id}, (err, doc) => {
-  if(!doc)
-  return res.status(400).json({status: false, message: 'user record not found'});
-  else{
-    // send dashboard informations
-    return res.status(200).json({status: true, 
-      user: lodash.pick(doc,
-        ['email','fullname', 'username','role', 'ref_link','cust_id','cust_id','activate','stage', 'downline'])});
-  }
+ dashboardInfo = doc;
+}).then( ()=> {
+  Invest.findOne({user_id: req._id}, (err, doc) => {
+    investInfo = doc;
+    console.log('invest-info ',investInfo);
+  });
+}).then(()=> {
+res.status(200).json({status: true, 
+  user: lodash.pick(dashboardInfo,
+    ['email','fullname', 'username','role', 'ref_link',
+    'cust_id','cust_id','activate','level', 'downline'])});
+
 });
+
 }
 
 const editAccount = (req, res, next) => {
-  console.log('recieved from client');
-  console.log(req._id);
 User.findOne({_id: req._id}, (err, doc) => {
-  console.log('find in database');
   if(!doc){
-    console.log('error fatching data')
     return res.status(204).json({status: false, message: 'record not found'});
   }else{
     console.log(doc);

@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 
 var paymentSchema = mongoose.Schema({
-    account: {
-        type: Number, default: 0
+   
+    user: {
+        type: String
+    },
+    user_id: {
+        type: String
     },
     investment: {
         type: Number
@@ -10,6 +14,13 @@ var paymentSchema = mongoose.Schema({
     cashout: {
         type: Number, default: 0
     },
+    earnings: {
+        type: Number, default: 0
+    },
+    history: [{
+        type: Number
+    }    
+    ],
 });
 
 mongoose.model('Payment', paymentSchema);
