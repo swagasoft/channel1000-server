@@ -17,6 +17,9 @@ var paymentSchema = mongoose.Schema({
     earnings: {
         type: Number, default: 0
     },
+    date: {
+        type: Date, default: Date.now()
+    },
     history: [{
         type: Number
     }    
