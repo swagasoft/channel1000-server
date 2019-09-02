@@ -70,7 +70,6 @@ let usernameToLower = getUsername.toLowerCase();
  
 
   if(ref_username != null){
-    console.log('inside referal',ref_username);
     User.findOne({username:ref_username}).then( result => {
       result.save();
       result.downline.push(usernameToLower);
@@ -78,12 +77,13 @@ let usernameToLower = getUsername.toLowerCase();
     });
   }else{
     console.log('REFERRAL IS NOT DEFINE.')
-    console.log(ref_username);
   }
 
   // =========================
 
- 
+ User.findOne({}, {},{sort : {'date': -1}}, (err, file)=> {
+  console.log('LAST MAN IN DATABASE', file.username);
+ });
   // let intValue = new_Cust_id + 1;
   let intValue = 0000;
 
@@ -114,8 +114,6 @@ user.save((err, doc) => {
       }
     
 });
-
-
 
 }
 
@@ -158,7 +156,6 @@ User.findOne({_id: req._id}, (err, doc) => {
 }).then( ()=> {
   Invest.findOne({user_id: req._id}, (err, doc) => {
     investInfo = doc;
-    console.log('invest-info ',investInfo);
   });
 }).then(()=> {
 res.status(200).json({status: true, 
@@ -175,9 +172,9 @@ User.findOne({_id: req._id}, (err, doc) => {
   if(!doc){
     return res.status(204).json({status: false, message: 'record not found'});
   }else{
-    console.log(doc);
     return res.status(200).json({status: true, 
-      user: lodash.pick(doc,['username','number', 'email','role','cust_id', 'ref_link'])});
+      user: lodash.pick(doc,['username','fullname', 
+      'email','role','cust_id', 'ref_link'])});
   }
 });
 }

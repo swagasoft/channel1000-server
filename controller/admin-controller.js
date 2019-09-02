@@ -41,5 +41,20 @@ const getInvestors = (req, res, next) => {
 });
 }
 
+const level1Users = async (req, res, next) => {
+    // {$where: 'this.downline.length >= 4' },
 
-module.exports = {adminDashboard, getInvestors }
+   await User.find(
+        {$and: [
+          {role: 'INVESTOR'},
+          {level: 'LEVEL-1'},
+          {$where: 'this.downline.length >= 4' },
+          {$where: 'this.downline.length  < 16' },
+          {activate: true}
+        ]}
+      ).then((docs)=> {
+res.status(200).send({docs});        
+      });
+}
+
+module.exports = {adminDashboard, getInvestors, level1Users }

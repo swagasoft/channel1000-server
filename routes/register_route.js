@@ -6,6 +6,7 @@ const contactController = require('../controller/server-control');
 controlTranx = require('../controller/control_trans');
 adminController = require('../controller/admin-controller');
 accountController = require('../controller/account-controller');
+levelController = require('../controller/level-controller');
 jwt_helper = require('../config/jwt_helper');
 
 
@@ -23,6 +24,8 @@ router.get('/get-investors',jwt_helper.verifyJwtToken ,adminController.getInvest
 router.get('/load-balance',jwt_helper.verifyJwtToken , accountController.loadBalance );
 router.get('/users-cashout',jwt_helper.verifyJwtToken , accountController.usersCashout);
 router.get('/get-transactions',jwt_helper.verifyJwtToken ,accountController.getTransactions );
+router.get('/level-one-users',jwt_helper.verifyJwtToken ,adminController.level1Users );
+router.post('/post-user-level2',jwt_helper.verifyJwtToken ,levelController.postUserToLevel2 );
 
 router.get('/', controlUser.index);
 
