@@ -53,8 +53,69 @@ const level1Users = async (req, res, next) => {
           {activate: true}
         ]}
       ).then((docs)=> {
-res.status(200).send({docs});        
+        if(docs){
+          res.status(200).send({docs, status: true});
+        }else{
+          res.status(200).send({docs, status: false, message:'users not found!'});
+        }
+        
+      });
+}
+const level2Users = async (req, res, next) => {
+  console.log('level TWO fires');
+   await User.find(
+        {$and: [
+          {role: 'INVESTOR'},
+          {level: 'LEVEL-2'},
+          {$where: 'this.downline.length >= 16' },
+          {$where: 'this.downline.length  < 64' },
+          {activate: true}
+        ]}
+      ).then((docs)=> {
+        if(docs){
+          res.status(200).send({docs, status: true}); 
+        }else{
+          res.status(200).send({docs, status: false, message: 'users not found!'}); 
+        }
+       
+      });
+}
+const level3Users = async (req, res, next) => {
+  console.log('level three fires');
+   await User.find(
+        {$and: [
+          {role: 'INVESTOR'},
+          {level: 'LEVEL-3'},
+          {$where: 'this.downline.length >= 64' },
+          {$where: 'this.downline.length  < 256' },
+          {activate: true}
+        ]}
+      ).then((docs)=> {
+        if(docs){
+res.status(200).send({docs, status: true});        
+        }else {
+res.status(200).send({ status: false, message: 'users not found'});        
+        }
+      });
+}
+const level4Users = async (req, res, next) => {
+  console.log('LEVEL FOUR FIRES');
+   await User.find(
+        {$and: [
+          {role: 'INVESTOR'},
+          {level: 'LEVEL-4'},
+          {$where: 'this.downline.length >= 256' },
+          {activate: true}
+        ]}
+      ).then((docs)=> {
+        if(docs){
+          res.status(200).send({docs, status: true});
+        }else{
+          res.status(200).send({docs, status: false, message:'users not found'});
+        }
+        
       });
 }
 
-module.exports = {adminDashboard, getInvestors, level1Users }
+module.exports = {adminDashboard, getInvestors, level1Users,
+   level2Users , level3Users, level4Users}

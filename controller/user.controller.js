@@ -7,7 +7,8 @@ const User = mongoose.model('User');
 const Invest = mongoose.model('Payment');
 const nodemailer = require("nodemailer");
 const Base_link = 'http://localhost:4200/#/link/';
-const stage1 = 'newbies';
+const MARKETER = 'MARKETER';
+
 
 var dashboardInfo = {};
 var investInfo = {};
@@ -93,17 +94,26 @@ user.email = email_lower;
 user.ref_link = Base_link+req.body.username;
 user.cust_id = intValue;
 user.role =  req.body.role;
-user.stage = stage1;
 user.ref = ref_username;
 user.downline.push();
 user.password = hashValue;
 user.activate = false;
 
-user.save((err, doc) => {
-    if(!err){
-       console.log('user details saved in database');
+user.save().then((doc) => {
+    if(doc){
+      // ####### create account for marketer
+      if (checkRole === MARKETER){
+        console.log(' USER IS A MARKETER...');
+        console.log(doc._id);
+        newAccount = new Invest();
+        newAccount.cashout = 0;
+        newAccount.user = doc.username;
+        newAccount.user_id = doc._id;
+        newAccount.save().then((saved) => console.log(saved));
+
+      }
+
        res.status(201).send(['Registration succesful']);
-      // emailUser(doc.email, doc.username);
     }else  if(err.errors.email) {
     res.status(442).send(['User already exist!']);
     }else if(err.errors.username){

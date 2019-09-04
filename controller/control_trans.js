@@ -27,31 +27,7 @@ const transaction = async (req, res, next) => {
  const userAccount =  await Invest.find({user_id : req._id});
  if (userAccount.length ){
   console.log('USER ACCOUNT FOUND IN DATABASE');
- await Invest.findOne({user_id : req._id}).then((user_record)=> {
-  //  console.log('file',file);
-   let previousInvest =  user_record.investment;
-   let newPayment = req.body.amount;
-   let new_balance = previousInvest + newPayment;
-   console.log(new_balance);
-   Invest.findOneAndUpdate({user_id : req._id}, {$set : {investment : new_balance}}).then(
-     (update)=> {
-      var trax = new Transaction();
-      trax.amount = req.body.amount;
-      trax.status = req.body.status;
-      trax.user_id = req._id;
-      trax.message = req.body.message;
-      trax.user = req.body.user;
-      trax.email = req.body.email;
-      trax.transaction = req.body.trans;
-      trax.reference = req.body.reference;
-      trax.save().then(()=> {
-       res.status(200);
-
-      });
-     }
-   );
-  
- });
+ res.status(200).send({message: 'Already a subscribe member'});
 
  }else{
    console.log('USER ACCOUNT NOT FOUND IN DATABASE')
@@ -133,7 +109,7 @@ const transaction = async (req, res, next) => {
             
     })
       
-res.redirect('/investment_create');
+res.status(200).send({status: true, message: 'payment saved!'});
   }
 }
 

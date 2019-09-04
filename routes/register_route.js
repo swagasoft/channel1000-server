@@ -25,7 +25,12 @@ router.get('/load-balance',jwt_helper.verifyJwtToken , accountController.loadBal
 router.get('/users-cashout',jwt_helper.verifyJwtToken , accountController.usersCashout);
 router.get('/get-transactions',jwt_helper.verifyJwtToken ,accountController.getTransactions );
 router.get('/level-one-users',jwt_helper.verifyJwtToken ,adminController.level1Users );
-router.post('/post-user-level2',jwt_helper.verifyJwtToken ,levelController.postUserToLevel2 );
+router.get('/level-two-users',jwt_helper.verifyJwtToken ,adminController.level2Users );
+router.get('/level-three-users',jwt_helper.verifyJwtToken ,adminController.level3Users );
+router.get('/level-four-users',jwt_helper.verifyJwtToken ,adminController.level4Users );
+router.get('/post-user-level2:id',jwt_helper.verifyJwtToken ,levelController.postUserToLevel2 );
+router.get('/post-user-level3:id',jwt_helper.verifyJwtToken ,levelController.postUserToLevel3 );
+router.get('/post-user-level4:id',jwt_helper.verifyJwtToken ,levelController.postUserToLevel4 );
 
 router.get('/', controlUser.index);
 
