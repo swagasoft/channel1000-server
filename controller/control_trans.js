@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Transaction = mongoose.model('Transaction');
 const Invest = mongoose.model('Payment');
+const PayoutModel = mongoose.model('Payout');
 
  function updateUser(body, id){
    console.log('update user fires');
@@ -114,9 +115,36 @@ res.status(200).send({status: true, message: 'payment saved!'});
 }
 
 
+
 investmentCreate = (req,res, next)=> {
     console.log('redirection successful..');
     console.log(req._id);
 }
 
-module.exports = {transaction, investmentCreate}
+const payOutUser = async (req, res) => {
+  var newPayout = new PayoutModel();
+
+    console.log(req.params.values);
+      let values = req.params.values;
+      let nameArr = values.trim().split(',');
+      user_ID = nameArr[0];
+      username = nameArr[1];
+      amount = nameArr[2];
+     
+      newPayout.amount = amount;
+      newPayout.user_id = user_ID;
+      newPayout.username = username;
+      newPayout.save();
+
+      await Invest.updateOne({user_id: user_ID},{$set: {cashout: 0}}).then((doc)=> {
+        console.log('UPDATE', doc);
+      })
+
+      await  Invest.find().where('cashout').gte(1).exec((error, result)=> {
+        console.log('sending result....');
+        res.status(200).send({result});
+});
+ }
+
+
+module.exports = {transaction, investmentCreate, payOutUser}

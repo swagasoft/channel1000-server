@@ -4,6 +4,8 @@ const User = mongoose.model('User');
 const Transaction = mongoose.model('Transaction');
 const Invest = mongoose.model('Payment');
 const level2 = 'LEVEL-2';
+const level3 = 'LEVEL-3';
+const level4 = 'LEVEL-4';
 
 
 postUserToLevel2 = async (req, res, next) => {
@@ -62,7 +64,7 @@ postUserToLevel3 = async (req, res, next) => {
      let re_investment = (funds_from4 * 0.3);
      
     //  # update user LEVEL
-     await User.updateOne({_id: getDocumentID}, {$set: {level : level2}}).then((result)=> {
+     await User.updateOne({_id: getDocumentID}, {$set: {level : level3}}).then((result)=> {
           console.log('USER RESULT', result);
       });
     //   #update user account
@@ -91,7 +93,7 @@ postUserToLevel4 = async (req, res, next) => {
      let re_investment = (funds_from4 * 0.1);
      
     //  # update user LEVEL
-     await User.updateOne({_id: getDocumentID}, {$set: {level : level2}}).then((result)=> {
+     await User.updateOne({_id: getDocumentID}, {$set: {level : level4}}).then((result)=> {
           console.log('USER RESULT', result);
       });
     //   #update user account

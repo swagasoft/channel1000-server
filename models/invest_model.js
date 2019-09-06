@@ -17,6 +17,15 @@ var paymentSchema = mongoose.Schema({
     earnings: {
         type: Number, default: 0
     },
+    bank_name: {
+        type: String
+    },
+    bank_number: {
+        type: Number
+    },
+    bank_fullname: {
+        type: String
+    },
     date: {
         type: Date, default: Date.now()
     },

@@ -9,3 +9,4 @@ mongoose.connect(process.env.MONGODB_URI,{useNewUrlParser : true}, (err) => {
 require('./user.models');
 require('./model_trans');
 require('./invest_model');
+require('./payout_model');
