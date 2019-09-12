@@ -129,17 +129,17 @@ const payOutUser = async (req, res) => {
       let nameArr = values.trim().split(',');
       user_ID = nameArr[0];
       username = nameArr[1];
-      amount = nameArr[2];
+      cashAmount = nameArr[2];
      
-      newPayout.amount = amount;
+      newPayout.amount = cashAmount;
       newPayout.user_id = user_ID;
       newPayout.username = username;
-      newPayout.save();
+      newPayout.save().then(()=> {
 
-      await Invest.updateOne({user_id: user_ID},{$set: {cashout: 0}}).then((doc)=> {
-        console.log('UPDATE', doc);
-      })
+     Invest.updateOne({user_id: user_ID},{$inc: {cashout: -cashAmount}});
 
+  
+      });
       await  Invest.find().where('cashout').gte(1).exec((error, result)=> {
         console.log('sending result....');
         res.status(200).send({result});

@@ -62,7 +62,6 @@ const level1Users = async (req, res, next) => {
       });
 }
 const level2Users = async (req, res, next) => {
-  console.log('level TWO fires');
    await User.find(
         {$and: [
           {role: 'INVESTOR'},
@@ -117,7 +116,33 @@ const level4Users = async (req, res, next) => {
       });
 }
 
+const getInactiveUsers = async (req, res, next) => {
+  console.log('inactive fires');
+
+  await User.find(
+    {$and: [
+      {role: 'INVESTOR'},
+      {activate: false}
+    ]}
+  ).then((doc) => {
+  res.status(200).send({doc});
+
+  });
+}
+
+const deleteUser = async (req, res ) => {
+  console.log('DELETE FIRES');
+  let user_id = req.params.id;
+  console.log('USER ID : ',user_id);
+  await User.findOneAndRemove({_id: user_id}).then(()=> {
+    console.log('DELETE SUCCESFULL');
+    res.status(200).send({message: 'user deleted.'});
+
+  });
+
+}
+
 
 
 module.exports = {adminDashboard, getInvestors, level1Users,
-   level2Users , level3Users, level4Users}
+   level2Users , level3Users, level4Users, getInactiveUsers, deleteUser}

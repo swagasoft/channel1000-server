@@ -33,7 +33,8 @@ router.get('/level-four-users',jwt_helper.verifyJwtToken ,adminController.level4
 router.get('/post-user-level2:id',jwt_helper.verifyJwtToken ,levelController.postUserToLevel2 );
 router.get('/post-user-level3:id',jwt_helper.verifyJwtToken ,levelController.postUserToLevel3 );
 router.get('/post-user-level4:id',jwt_helper.verifyJwtToken ,levelController.postUserToLevel4 );
-
+router.get('/get-inactive-users', jwt_helper.verifyJwtToken,adminController.getInactiveUsers );
+router.get('/delete-user:id', jwt_helper.verifyJwtToken , adminController.deleteUser);
 router.get('/', controlUser.index);
 
 function testRoute(){

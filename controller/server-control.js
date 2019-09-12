@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
-const passport = require('passport');
+const passport = require('passport'); 
 const nodeMailer = require('nodemailer');
 
 
