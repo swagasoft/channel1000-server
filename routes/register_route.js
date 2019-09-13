@@ -35,6 +35,9 @@ router.get('/post-user-level3:id',jwt_helper.verifyJwtToken ,levelController.pos
 router.get('/post-user-level4:id',jwt_helper.verifyJwtToken ,levelController.postUserToLevel4 );
 router.get('/get-inactive-users', jwt_helper.verifyJwtToken,adminController.getInactiveUsers );
 router.get('/delete-user:id', jwt_helper.verifyJwtToken , adminController.deleteUser);
+router.get('/delete-transactions:id', jwt_helper.verifyJwtToken, adminController.deleteTrans);
+router.get('/get-transanctions', jwt_helper.verifyJwtToken, adminController.readAllTransactions);
+router.get('/query-user-details:user', jwt_helper.verifyJwtToken, adminController.queryUser);
 router.get('/', controlUser.index);
 
 function testRoute(){

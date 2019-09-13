@@ -51,7 +51,6 @@ const transaction = async (req, res, next) => {
                     {activate: true}
                   ]}
                 ).sort({date: 1}).then( result4 => {
-                  console.log('RESULT 4');
                  if(result4){
                     result4.downline.push(user_username);
                     result4.save().then(()=> {

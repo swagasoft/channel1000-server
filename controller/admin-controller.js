@@ -131,18 +131,37 @@ const getInactiveUsers = async (req, res, next) => {
 }
 
 const deleteUser = async (req, res ) => {
-  console.log('DELETE FIRES');
   let user_id = req.params.id;
-  console.log('USER ID : ',user_id);
   await User.findOneAndRemove({_id: user_id}).then(()=> {
-    console.log('DELETE SUCCESFULL');
-    res.status(200).send({message: 'user deleted.'});
+    res.status(200).send({ status: true , message: 'user deleted.'});
 
   });
 
 }
 
+const deleteTrans = async (req, res) => {
+  let user_id = req.params.id;
+  await Transaction.findOneAndRemove({_id: user_id}).then(() => {
+    res.status(200).send({status: true, message: ' user deleted'});
+  })
+}
+
+const readAllTransactions = async (req, res) => {
+Transaction.find({}).sort({date: -1}).limit(20).then((trans)=> {
+  res.status(200).send({trans});
+});
+}
+
+const queryUser = async (req, res, next)=> {
+
+  let user = req.params.user;
+ const queryInvest = await  Invest.findOne({user: user});
+
+  res.status(200).send({queryInvest});
+  
+}
 
 
-module.exports = {adminDashboard, getInvestors, level1Users,
-   level2Users , level3Users, level4Users, getInactiveUsers, deleteUser}
+
+module.exports = {adminDashboard,queryUser, getInvestors, level1Users,readAllTransactions,
+   level2Users , level3Users, level4Users,deleteTrans, getInactiveUsers, deleteUser}
